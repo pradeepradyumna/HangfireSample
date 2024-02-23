@@ -1,6 +1,6 @@
 # Create your first Hangfire job using .NET 8 with PostgresSQL
 
-In this article, I'm going to share a few simple steps you will need to create your first hangfire job using .NET 8(which is the latest at the time of writing this article) with Postgres as the database.
+In this article, I will share a few simple steps you will need to create your first hangfire job using .NET 8(the latest at the time of writing this article) with Postgres as the database.
 
 Also, please be aware that in this article I'm not going to brief what Hangfire is, as there are plenty of articles already written by wise authors. :)
 
@@ -12,7 +12,7 @@ We can create either an ASP.NET Core Web App or API (it doesn't really matter wh
 
 ## 2. Install Nuget Packages
 
-You'll need to install following Nuget packages
+You'll need to install the following Nuget packages
 `Npgsql.EntityFrameworkCore.PostgreSQL`
 `Microsoft.EntityFrameworkCore.Design`
 `Hangfire.AspNetCore`
@@ -30,10 +30,6 @@ You will need a custom DBContext class to run a DB Migration
         public DefaultDbContext(DbContextOptions<DefaultDbContext> options)
             : base(options) { }
     }
-
-```
-
-```
 ```
 
 ## 4. Create a DB in Postgres
@@ -49,12 +45,8 @@ Now before you run migration configure the DB path in `appsettings.json` and upd
 "ConnectionStrings": {
   "defaultConnection": "Host=localhost;Port=5432;Username=postgres;Password=YOUR_PWD;Database=HangfireSample"
 }
-
 ```
-
-```
-```
-Update below code in `program.cs`
+Update the below code in `program.cs`
 ```
 builder.Services.AddEntityFrameworkNpgsql().AddDbContext<DefaultDbContext>(options => {
     options.UseNpgsql(builder.Configuration.GetConnectionString("defaultConnection"));
@@ -74,7 +66,7 @@ This will create `__EFMigrationsHistory` under `public` schema
 
 ## 7. Almost done
 
-Now configure Hangfire service in `program.cs` woth below code
+Now configure Hangfire service in `program.cs` with the below code
 
 ```
 builder.Services.AddHangfire(x =>
@@ -103,12 +95,16 @@ BackgroundJob.Enqueue(() => Console.WriteLine("My first handfire job!"));
 
 Now, you run the solution!
 
-To see your job, just visit
+To see your job, visit
 [https://localhost:44397/dashboard](https://localhost:44397/dashboard)
 
 And if you go to [https://localhost:44397/dashboard/jobs/succeeded](https://localhost:44397/dashboard/jobs/succeeded) 
 you'll see the job you just executed.
 
+
+Also, just you know, if you check the `HangfireSample` database, you'll the hangfire tables would be created under `hangfire` schema.
+
 Just for your reference [here](https://github.com/pradeepradyumna/HangfireSample) is the complete working sample of the code I just explained.
 
-Hope it helped you!
+
+I hope it helped you!
